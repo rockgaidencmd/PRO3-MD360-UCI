@@ -18,7 +18,7 @@ const firebaseConfig = {
 };
 // ─────────────────────────────────────────────
 
-const COLECCION   = 'medishort360';
+const COLECCION = 'codigos_uci';
 const LS_KEY      = 'ms360uci_activado';
 const LS_CODE_KEY = 'ms360uci_codigo';
 
