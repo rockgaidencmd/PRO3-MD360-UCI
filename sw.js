@@ -1,5 +1,5 @@
-// ===== sw.js · MS360-UCI · Service Worker v3 =====
-const CACHE_NAME = 'ms360uci-v4';
+// ===== sw.js · MS360-UCI · Service Worker v5 =====
+const CACHE_NAME = 'ms360uci-v5';
 
 const PRECACHE_URLS = [
   './',
@@ -25,7 +25,12 @@ const BYPASS_ORIGINS = [
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE_URLS))
+    caches.open(CACHE_NAME).then((cache) => {
+      // Cachea uno por uno; si alguno falla no rompe toda la instalación
+      return Promise.allSettled(
+        PRECACHE_URLS.map((url) => cache.add(url))
+      );
+    })
   );
   self.skipWaiting();
 });
@@ -44,6 +49,24 @@ self.addEventListener('fetch', (event) => {
 
   if (BYPASS_ORIGINS.some((origin) => url.hostname.includes(origin))) return;
   if (event.request.method !== 'GET') return;
+
+  // Para navegaciones (abrir la app), siempre devolver index.html si falla la red
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          const clone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', clone));
+          return networkResponse;
+        })
+        .catch(() =>
+          caches.match('./index.html').then(
+            (cached) => cached || caches.match('./')
+          )
+        )
+    );
+    return;
+  }
 
   event.respondWith(
     fetch(event.request)
