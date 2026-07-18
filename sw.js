@@ -1,5 +1,5 @@
-// ===== sw.js · MS360-UCI · Service Worker v5 =====
-const CACHE_NAME = 'ms360uci-v5';
+// ===== sw.js · MS360-UCI · Service Worker v6 =====
+const CACHE_NAME = 'ms360uci-v6';
 
 const PRECACHE_URLS = [
   './',
