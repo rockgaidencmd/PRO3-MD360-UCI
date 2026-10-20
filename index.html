@@ -177,7 +177,7 @@
     line-height: 1.5;
   }
 </style>
-<style>/* FREE: pantalla de licencia deshabilitada; revisar antes de publicar */ #activation-gate { display: none !important; }</style>
+
 </head>
 <body>
 
@@ -186,32 +186,7 @@
      Solo se muestra si el dispositivo no está activado.
      activacion.js lo controla con localStorage.
 ════════════════════════════════════════════════ -->
-<div id="activation-gate">
-  <div class="gate-box">
-    <img src="icon-512.png" alt="MS360-UCI" class="gate-logo" />
-    <div class="gate-title">MS360-UCI</div>
-    <div class="gate-appname">Medishort360</div>
-    <div class="gate-subtitle">Ingresa tu código de activación para continuar</div>
-
-    <label class="gate-label" for="gate-input">Código de activación</label>
-    <input
-      type="text"
-      id="gate-input"
-      maxlength="20"
-      autocomplete="off"
-      autocorrect="off"
-      spellcheck="false"
-      placeholder="XXXX-XXXX"
-    />
-    <div id="gate-error"></div>
-
-    <button id="gate-btn">ACTIVAR</button>
-
-    <div class="gate-footer">
-      Balance Hídrico · UCI / Hospitalización<br/>
-      La activación se guarda en este dispositivo
-    </div>
-  </div>
+<!-- FREE: activation overlay removed; core application unchanged -->
 </div>
 
 <!-- ══════════════ APP ORIGINAL (sin modificar) ══════════════ -->
