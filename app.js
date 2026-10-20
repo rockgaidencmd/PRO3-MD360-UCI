@@ -141,21 +141,6 @@ function calcular() {
   }
 
   // ==========================================
-  // CÁLCULOS ANTROPOMÉTRICOS
-  // ==========================================
-
-  const pesoIdeal = calcularPesoIdeal(talla, sexoActual);
-  const imc = calcularIMC(peso, talla);
-  const imcCat = clasificarIMC(imc);
-  const sc = calcularSuperficieCorporal(peso, talla);
-
-  // Mostrar resultados antropométricos
-  document.getElementById('r-pesoIdeal').textContent = pesoIdeal + ' kg';
-  document.getElementById('r-imc').textContent = imc;
-  document.getElementById('r-imc-cat').textContent = imcCat;
-  document.getElementById('r-sc').textContent = sc + ' m²';
-
-  // ==========================================
   // CÁLCULOS DE BALANCE HÍDRICO
   // ==========================================
 
@@ -280,10 +265,6 @@ function resetAll() {
   nasalSeleccionado = null;
 
   // Limpiar resultados
-  document.getElementById('r-pesoIdeal').textContent = '—';
-  document.getElementById('r-imc').textContent = '—';
-  document.getElementById('r-imc-cat').textContent = '—';
-  document.getElementById('r-sc').textContent = '—';
   document.getElementById('r-aguaEndo').textContent = '—';
   document.getElementById('r-perInsens').textContent = '—';
   document.getElementById('r-gastoU').textContent = '—';
@@ -298,21 +279,12 @@ function resetAll() {
 }
 
 function compartir() {
-  const pesoIdeal = document.getElementById('r-pesoIdeal').textContent;
-  const imc = document.getElementById('r-imc').textContent;
-  const imcCat = document.getElementById('r-imc-cat').textContent;
-  const sc = document.getElementById('r-sc').textContent;
   const aguaEndo = document.getElementById('r-aguaEndo').textContent;
   const perInsens = document.getElementById('r-perInsens').textContent;
   const gastoU = document.getElementById('r-gastoU').textContent;
   const total = document.getElementById('r-total').textContent;
 
   const mensaje = `📊 *Resultados MS360-UCI - Balance Hídrico*
-
-📐 Datos Antropométricos
-⚖️ Peso Ideal: ${pesoIdeal}
-📏 IMC: ${imc} (${imcCat})
-🧬 Superficie Corporal: ${sc}
 
 💦 Balance Hídrico
 💧 Agua Endógena: ${aguaEndo}
