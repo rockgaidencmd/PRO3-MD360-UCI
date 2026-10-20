@@ -1,0 +1,14 @@
+{
+  "product": "Herramientas UCI",
+  "mode": "freemium",
+  "currency": "USD",
+  "promotionalPriceUSD": 1,
+  "regularPriceUSD": 2,
+  "promotionEnds": "2026-12-31",
+  "freeCompletedActions": 3,
+  "licenseCollection": "codigos_uci",
+  "licenseReuse": "existing-unused-only",
+  "payment": "manual-verification",
+  "status": "CONFIGURATION_ONLY_NOT_ENFORCED",
+  "securityNotes": "Trial requires server-side identity/counter; do not use localStorage alone. Existing Firestore code redemption must be hardened and tested before production."
+}
