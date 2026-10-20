@@ -1,84 +1,21 @@
-// ===== sw.js · MS360-UCI · Service Worker v6 =====
-const CACHE_NAME = 'ms360uci-v6';
-
-const PRECACHE_URLS = [
-  './',
-  './index.html',
-  './app.js',
-  './activacion.js',
-  './style.css',
-  './manifest.json',
-  './favicon.png',
-  './icon-180.png',
-  './icon-512.png',
-];
-
-const BYPASS_ORIGINS = [
-  'firestore.googleapis.com',
-  'firebase.googleapis.com',
-  'identitytoolkit.googleapis.com',
-  'securetoken.googleapis.com',
-  'www.gstatic.com',
-  'fonts.googleapis.com',
-  'fonts.gstatic.com',
-];
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      // Cachea uno por uno; si alguno falla no rompe toda la instalación
-      return Promise.allSettled(
-        PRECACHE_URLS.map((url) => cache.add(url))
-      );
-    })
-  );
-  self.skipWaiting();
+/* MEDISHORTS 360 FREE — Service Worker propio, sin activación */
+const CACHE_NAME = 'ms360-free-uci-20261020-v1';
+const ASSETS = ["./","./index.html","./app.js","./style.css","./manifest.json","./install-free.js","icon-192.png","icon-512.png"];
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
+self.addEventListener('activate', event => {
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('ms360-free-uci-') && key !== CACHE_NAME).map(key => caches.delete(key)))).then(() => self.clients.claim()));
 });
-
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-
-  if (BYPASS_ORIGINS.some((origin) => url.hostname.includes(origin))) return;
+self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
-
-  // Para navegaciones (abrir la app), siempre devolver index.html si falla la red
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request)
-        .then((networkResponse) => {
-          const clone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', clone));
-          return networkResponse;
-        })
-        .catch(() =>
-          caches.match('./index.html').then(
-            (cached) => cached || caches.match('./')
-          )
-        )
-    );
-    return;
-  }
-
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        const clone = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        return networkResponse;
-      })
-      .catch(() =>
-        caches.match(event.request).then(
-          (cached) => cached || new Response('Sin conexión', { status: 503 })
-        )
-      )
-  );
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin || !url.pathname.startsWith(new URL(self.registration.scope).pathname)) return;
+  event.respondWith(fetch(event.request).then(response => {
+    if (response.ok) {
+      const copy = response.clone();
+      event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.put(event.request, copy)));
+    }
+    return response;
+  }).catch(() => caches.match(event.request).then(cached => cached || new Response('Sin conexión', {status:503}))));
 });
