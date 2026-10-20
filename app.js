@@ -140,6 +140,7 @@ function calcular() {
     return;
   }
 
+  if (window.MS360Premium && !window.MS360Premium.allow()) return;
   // ==========================================
   // CÁLCULOS DE BALANCE HÍDRICO
   // ==========================================
@@ -370,6 +371,7 @@ function calcularAntropo() {
     return;
   }
 
+  if (window.MS360Premium && !window.MS360Premium.allow()) return;
   // PI (Devine, misma que balance hídrico)
   const pi = calcularPesoIdeal(talla, sexoAntropo);
   // PPI = peso real / peso ideal × 100
