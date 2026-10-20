@@ -15,181 +15,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
-
-<!-- ═══ ESTILOS DEL GATE DE ACTIVACIÓN ═══ -->
-<style>
-  #activation-gate {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: linear-gradient(160deg, #0F0F1A 0%, #141424 60%, #0F0F1A 100%);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    animation: gateFadeIn 0.4s ease;
-  }
-
-  @keyframes gateFadeIn {
-    from { opacity: 0; transform: scale(1.02); }
-    to   { opacity: 1; transform: scale(1); }
-  }
-
-  @keyframes gateFadeOut {
-    from { opacity: 1; transform: scale(1); }
-    to   { opacity: 0; transform: scale(0.97); }
-  }
-
-  .gate-box {
-    width: 100%;
-    max-width: 380px;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(0,200,160,0.2);
-    border-radius: 20px;
-    padding: 36px 28px 32px;
-    text-align: center;
-    box-shadow: 0 0 40px rgba(0,200,160,0.08), 0 8px 32px rgba(0,0,0,0.6);
-  }
-
-  .gate-logo {
-    width: 68px;
-    height: 68px;
-    margin: 0 auto 14px;
-    display: block;
-    border-radius: 16px;
-    filter: drop-shadow(0 0 12px rgba(0,200,160,0.4));
-  }
-
-  .gate-title {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: #00C8A0;
-    letter-spacing: 1.5px;
-    margin: 0 0 2px;
-  }
-
-  .gate-appname {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.35);
-    letter-spacing: 0.5px;
-    margin: 0 0 6px;
-  }
-
-  .gate-subtitle {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.82rem;
-    color: rgba(255,255,255,0.45);
-    margin: 0 0 28px;
-  }
-
-  .gate-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    display: block;
-    text-align: left;
-    margin-bottom: 8px;
-  }
-
-  #gate-input {
-    width: 100%;
-    background: rgba(0,200,160,0.07);
-    border: 1.5px solid rgba(0,200,160,0.35);
-    border-radius: 10px;
-    color: #00C8A0;
-    font-family: 'DM Mono', monospace;
-    font-size: 1.2rem;
-    letter-spacing: 4px;
-    text-align: center;
-    padding: 13px 16px;
-    outline: none;
-    box-sizing: border-box;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  #gate-input:focus {
-    border-color: #00C8A0;
-    box-shadow: 0 0 0 3px rgba(0,200,160,0.15);
-  }
-
-  #gate-input::placeholder {
-    color: rgba(0,200,160,0.25);
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-  }
-
-  @keyframes gateShake {
-    0%,100% { transform: translateX(0); }
-    20%     { transform: translateX(-6px); }
-    40%     { transform: translateX(6px); }
-    60%     { transform: translateX(-4px); }
-    80%     { transform: translateX(4px); }
-  }
-
-  #gate-input.shake {
-    animation: gateShake 0.4s ease;
-    border-color: #ff4d6d;
-    box-shadow: 0 0 0 3px rgba(255,77,109,0.15);
-  }
-
-  #gate-error {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.78rem;
-    color: #ff4d6d;
-    margin: 8px 0 0;
-    min-height: 18px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  #gate-error.visible { opacity: 1; }
-
-  #gate-btn {
-    width: 100%;
-    margin-top: 20px;
-    padding: 13px;
-    background: linear-gradient(135deg, #00967a, #00C8A0);
-    border: none;
-    border-radius: 10px;
-    color: #0F0F1A;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-  }
-  #gate-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
-  #gate-btn:active:not(:disabled) { transform: translateY(0); }
-  #gate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  .gate-footer {
-    margin-top: 18px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.2);
-    line-height: 1.5;
-  }
-</style>
-
 </head>
 <body>
-
-<!-- ═══════════════════════════════════════════════
-     PANTALLA DE ACTIVACIÓN — OVERLAY FIJO
-     Solo se muestra si el dispositivo no está activado.
-     activacion.js lo controla con localStorage.
-════════════════════════════════════════════════ -->
-<!-- FREE: activation overlay removed; core application unchanged -->
-</div>
-
-<!-- ══════════════ APP ORIGINAL (sin modificar) ══════════════ -->
 
 <header>
   <div class="header-inner">
@@ -206,19 +33,97 @@
 
 <main>
 
-  <div id="install-banner">
-    <div class="banner-text">📲 <strong>Instala MS360-UCI</strong> en tu celular para usarla sin internet.</div>
-    <button class="btn-install" onclick="installApp()">⬇️ Instalar en mi celular</button>
-  </div>
-
   <!-- NAVEGACIÓN DE PESTAÑAS -->
   <div class="tabs-nav">
-    <button class="tab-btn active" id="tab-balance" onclick="cambiarTab('balance')">💦 Balance Hídrico</button>
+    <button class="tab-btn active" id="tab-aprende" onclick="cambiarTab('aprende')">📘 Aprende</button>
+    <button class="tab-btn" id="tab-balance" onclick="cambiarTab('balance')">💦 Balance</button>
     <button class="tab-btn" id="tab-antropo" onclick="cambiarTab('antropo')">📐 Antropometría</button>
   </div>
 
+  <!-- ============ PANEL APRENDE ============ -->
+  <div class="tab-panel active" id="panel-aprende">
+
+    <div class="card">
+      <div class="card-header"><span>📘</span> Mini-clase — Balance Hídrico y Antropometría</div>
+      <div class="card-body">
+        <p style="color:var(--text-dim);font-size:13.5px;line-height:1.6;margin:0">
+          Aprende los dos cálculos clave en cuidados intensivos: el balance hídrico (entradas y salidas de líquidos) y los parámetros antropométricos (peso ideal, superficie corporal, agua corporal). Lee y luego practica en las otras pestañas.
+        </p>
+      </div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-header">💦 1. Balance Hídrico</div>
+      <div class="res-body">
+        <p style="color:var(--text);font-size:13.5px;line-height:1.7;margin:0 0 10px">
+          Es la diferencia entre todo lo que <strong>entra</strong> al paciente y todo lo que <strong>sale</strong>, en un período (por turno o 24 h).
+        </p>
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;font-family:'DM Mono',monospace;color:var(--primary-light);font-size:13px;line-height:1.7;margin-bottom:10px">
+          Balance = Total entradas − Total salidas
+        </div>
+        <p style="color:var(--text-dim);font-size:12.5px;line-height:1.6;margin:0">
+          <strong>Entradas:</strong> sueros, medicación IV, agua oral, nutrición.<br/>
+          <strong>Salidas:</strong> diuresis, drenajes, vómito, deposiciones, pérdidas insensibles.<br/>
+          Balance <strong>positivo</strong> = entró más de lo que salió. <strong>Negativo</strong> = salió más de lo que entró.
+        </p>
+      </div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-header">💡 Ejemplo — Balance</div>
+      <div class="res-body">
+        <p style="color:var(--text);font-size:13px;line-height:1.8;margin:0">
+          Entradas del turno: 1200 mL &nbsp;|&nbsp; Salidas: 900 mL<br/>
+          <span style="font-family:'DM Mono',monospace;color:var(--primary-light)">1200 − 900 = <strong>+300 mL</strong></span>
+        </p>
+        <div style="background:rgba(16,185,129,0.1);border-left:3px solid var(--success);border-radius:0 8px 8px 0;padding:10px 12px;color:var(--text);font-size:13px;margin-top:10px">
+          ✅ Balance <strong>positivo de 300 mL</strong>: el paciente retuvo líquido en el turno.
+        </div>
+      </div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-header">📐 2. Antropometría</div>
+      <div class="res-body">
+        <p style="color:var(--text);font-size:13.5px;line-height:1.7;margin:0 0 10px">
+          Son cálculos basados en peso, talla y edad, útiles para dosificar y valorar al paciente:
+        </p>
+        <p style="color:var(--text-dim);font-size:12.5px;line-height:1.7;margin:0">
+          • <strong>IMC:</strong> peso ÷ talla² — valora el estado nutricional.<br/>
+          • <strong>Peso ideal:</strong> peso teórico según la talla.<br/>
+          • <strong>ASC (superficie corporal):</strong> útil para dosis y fluidos.<br/>
+          • <strong>MCM (masa magra)</strong> y <strong>ACT (agua corporal total):</strong> valoran composición e hidratación.
+        </p>
+      </div>
+    </div>
+
+    <div class="res-card">
+      <div class="res-header">💡 Ejemplo — IMC</div>
+      <div class="res-body">
+        <p style="color:var(--text);font-size:13px;line-height:1.8;margin:0">
+          Paciente de 70 kg y 1.70 m de talla:<br/>
+          <span style="font-family:'DM Mono',monospace;color:var(--primary-light)">70 ÷ (1.70 × 1.70) = 70 ÷ 2.89 ≈ <strong>24.2 kg/m²</strong></span>
+        </p>
+        <div style="background:rgba(25,118,210,0.12);border-left:3px solid var(--primary);border-radius:0 8px 8px 0;padding:10px 12px;color:var(--text);font-size:13px;margin-top:10px">
+          ✅ Un IMC de 24.2 está dentro del rango de <strong>peso normal</strong> (18.5–24.9).
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="background:rgba(245,158,11,0.08);border-color:rgba(245,158,11,0.4)">
+      <div class="card-body">
+        <p style="color:#ffd591;font-size:12.5px;line-height:1.6;margin:0">
+          ⚠️ <strong>Herramienta educativa.</strong> Estos cálculos son para aprendizaje y práctica. Verifica siempre con los protocolos de tu institución y el criterio clínico. Consulta a un profesional de la salud para decisiones sobre pacientes reales.
+        </p>
+      </div>
+    </div>
+
+    <button class="btn-calc" onclick="cambiarTab('balance')" style="margin-top:4px">💦 Ahora practica con el Balance Hídrico →</button>
+
+  </div><!-- /panel-aprende -->
+
   <!-- ============ PANEL BALANCE HÍDRICO ============ -->
-  <div class="tab-panel active" id="panel-balance">
+  <div class="tab-panel" id="panel-balance">
 
   <!-- DATOS PACIENTE -->
   <div class="card">
@@ -526,11 +431,6 @@
 
 </main>
 
-<!-- Scripts originales -->
 <script src="app.js"></script>
-
-<!-- Script de activación Firebase (módulo ES) -->
-
-
 </body>
 </html>
