@@ -2,41 +2,11 @@
 // APP.JS - MS360-UCI Balance Hídrico
 // ==========================================
 
-let deferredPrompt = null;
 let sexoActual = 'mujer';
 let sexoAntropo = 'mujer';
 let respiratorioSeleccionado = null;
 let nasalSeleccionado = null;
 let abdomenAbierto = false;
-
-// ==========================================
-// INSTALACIÓN PWA
-// ==========================================
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'block';
-});
-
-window.addEventListener('appinstalled', () => {
-  console.log('MS360-UCI instalada');
-  const banner = document.getElementById('install-banner');
-  if (banner) banner.style.display = 'none';
-});
-
-function installApp() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('App instalada');
-      }
-      deferredPrompt = null;
-    });
-  }
-}
 
 // ==========================================
 // FUNCIONES DE ENTRADA
@@ -374,22 +344,13 @@ function compartir() {
 // ==========================================
 
 function cambiarTab(tab) {
-  const panelBalance = document.getElementById('panel-balance');
-  const panelAntropo = document.getElementById('panel-antropo');
-  const btnBalance = document.getElementById('tab-balance');
-  const btnAntropo = document.getElementById('tab-antropo');
-
-  if (tab === 'balance') {
-    panelBalance.classList.add('active');
-    panelAntropo.classList.remove('active');
-    btnBalance.classList.add('active');
-    btnAntropo.classList.remove('active');
-  } else {
-    panelAntropo.classList.add('active');
-    panelBalance.classList.remove('active');
-    btnAntropo.classList.add('active');
-    btnBalance.classList.remove('active');
-  }
+  const paneles = ['aprende', 'balance', 'antropo'];
+  paneles.forEach(p => {
+    const panel = document.getElementById('panel-' + p);
+    const btn = document.getElementById('tab-' + p);
+    if (panel) panel.classList.toggle('active', p === tab);
+    if (btn) btn.classList.toggle('active', p === tab);
+  });
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -516,11 +477,5 @@ function compartirAntropo() {
 }
 
 // ==========================================
-// SERVICE WORKER (PWA)
+// SERVICE WORKER gestionado por la app maestra MS360
 // ==========================================
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(err => {
-    console.log('Service Worker error:', err);
-  });
-}
