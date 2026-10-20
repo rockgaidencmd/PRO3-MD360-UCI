@@ -15,6 +15,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+#ms360-install-free{position:fixed;left:12px;bottom:calc(16px + env(safe-area-inset-bottom, 0px));z-index:9990;padding:12px 18px;border-radius:999px;border:1px solid #65c5ff;background:#1469bf;color:white;font:700 15px system-ui,sans-serif;box-shadow:0 5px 20px #0007;cursor:pointer}
+#ms360-install-free[hidden]{display:none!important}
+</style>
 </head>
 <body>
 
@@ -432,5 +436,7 @@
 </main>
 
 <script src="app.js"></script>
+<button id="ms360-install-free" type="button" hidden>⬇ Instalar Herramientas UCI</button>
+<script src="./install-free.js"></script>
 </body>
 </html>
