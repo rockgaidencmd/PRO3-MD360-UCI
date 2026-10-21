@@ -1,6 +1,6 @@
 /* MEDISHORTS 360 FREE — Service Worker propio, sin activación */
-const CACHE_NAME = 'ms360-free-uci-20261020-v1';
-const ASSETS = ["./","./index.html","./app.js","./style.css","./manifest.json","./install-free.js","icon-192.png","icon-512.png"];
+const CACHE_NAME = 'ms360-free-uci-20261021-lemon-v1';
+const ASSETS = ["./lemon-license.js", "./premium.js", "./","./index.html","./app.js","./style.css","./manifest.json","./install-free.js","icon-192.png","icon-512.png"];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
